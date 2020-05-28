@@ -5,7 +5,12 @@ const Usuario = require('../models/usuario');
 const bcrypt = require('bcrypt');
 
 const _ = require('underscore')
-app.get('/usuario', function (req, res) {
+
+const { verificaToken, verificaAdminRole } = require('../middlewares/auth')
+
+
+app.get('/usuario', verificaToken ,  (req, res) => {
+    
 
     let desde = req.query.desde || 0;
     let hasta = req.query.hasta || 5;
@@ -32,7 +37,7 @@ app.get('/usuario', function (req, res) {
     });
 
 
-app.post('/usuario', function (req, res) {
+app.post('/usuario', [verificaToken, verificaAdminRole],function (req, res) {
     let body = req.body;
 
     const saltRounds = 10;
@@ -60,7 +65,7 @@ app.post('/usuario', function (req, res) {
 
 });
 
-app.put('/usuario/:id', function (req, res) {
+app.put('/usuario/:id', [verificaToken, verificaAdminRole], (req, res) => {
     let id = req.params.id;
 
     let body = _.pick(req.body, ['nombre','email','img','role','estado']);
@@ -84,7 +89,7 @@ app.put('/usuario/:id', function (req, res) {
     })
 });
 
-app.delete('/usuario/:id', function (req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdminRole], (req, res)=> {
 
     let id = req.params.id;
 

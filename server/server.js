@@ -6,8 +6,12 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
  
 
+///CONFIG DE RUTAS
+app.use (require('./routes/index'));
 
-app.use (require('./routes/usuario'));
+// app.use (require('./routes/usuario'));
+// app.use (require('./routes/login'));
+
 // parse application/json
 app.use(bodyParser.json()) //Midleweare se ejecuta siempre que el codigo pase por aca
 
